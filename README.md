@@ -22,4 +22,10 @@ Funktioner:
 
 Light/Dark Mode: Anpassar sig automatiskt efter systeminställningar.
 
-Animationer: Hover-effekter med glidande gradientskiften.
+Animationer: 
+
+*Hover-effekter med glidande gradientskiften.
+
+*Hoppande groda
+
+*Inglidande hamburgermeny

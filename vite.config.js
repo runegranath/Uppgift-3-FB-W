@@ -16,6 +16,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, "index.html"),
         sass: resolve(__dirname, "src/SASS.html"),
+        animering: resolve(__dirname, "src/Animering.html"),
       },
     },
   },

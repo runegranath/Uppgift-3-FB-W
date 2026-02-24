@@ -1,4 +1,4 @@
-import "./main.scss";
+import "./styling/main.scss";
 
 const frogContainer = document.getElementById("frog-animation");
 

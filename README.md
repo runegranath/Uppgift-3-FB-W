@@ -18,7 +18,17 @@ Variabler: Centraliserade färger för Light/Dark mode.
 
 GitHub Actions – Automatisk publicering (CI/CD) vid varje push.
 
+Chart.js – Datavisualisering för att presentera kurs- och programstatistik.
+
+Google Maps API – Integration av interaktiv karta med sökfunktion (Geocoding).
+
+JSDoc – Teknisk dokumentation av JavaScript-koden för bättre läsbarhet och struktur.
+
 Funktioner:
+
+Datavisualisering: Hämtar data via Fetch API och presenterar de 6 mest sökta kurserna i ett stapeldiagram samt de 5 mest sökta programmen i ett cirkeldiagram.
+
+Kartsök: En sökfunktion som omvandlar textadresser till koordinater och markerar platsen på en Google Map.
 
 Light/Dark Mode: Anpassar sig automatiskt efter systeminställningar.
 

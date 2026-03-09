@@ -17,6 +17,8 @@ export default defineConfig({
         main: resolve(__dirname, "index.html"),
         sass: resolve(__dirname, "src/SASS.html"),
         animering: resolve(__dirname, "src/Animering.html"),
+        diagram: resolve(__dirname, "src/diagram.html"),
+        karta: resolve(__dirname, "src/karta.html"),
       },
     },
   },

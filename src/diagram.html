@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lab 3</title>
+</head>
+
+<body>
+    <input type="checkbox" id="nav-toggle" class="nav-checkbox">
+
+    <header>
+        <h1>Lab 3</h1>
+        <label for="nav-toggle" class="hamburger-label">
+            <span></span>
+            <span></span>
+            <span></span>
+        </label>
+    </header>
+
+    <div class="layout-wrapper">
+        <nav class="sidebar">
+            <ul>
+                <li><a href="../index.html">Hem</a></li>
+                <li><a href="SASS.html" class="secondary">SASS</a></li>
+                <li><a href="Animering.html" class="secondary">Animering</a></li>
+                <li><a href="karta.html" class="secondary">Karta</a></li>
+                <li><a href="#" class="secondary">Diagram</a></li>
+            </ul>
+        </nav>
+
+        <main id="main-content">
+            <div class="chart-container">
+                <h2>Topp 6 mest sökta kurser</h2>
+                <canvas id="barChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <h2>Topp 5 mest sökta program</h2>
+                <canvas id="pieChart"></canvas>
+            </div>
+        </main>
+
+    </div>
+
+    <footer>
+        <p>RG 2026</p>
+    </footer>
+
+    <script type="module" src="./main.js"></script>
+</body>
+
+</html>

@@ -41,6 +41,8 @@ $font-headings: "Georgia", serif;
   }
 
   @if $type == "primary" {
+    transform: scale(1);
+
     transform: scale(1.05);
   } @else if $type == "secondary" {
     background: linear-gradient(

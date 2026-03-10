@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: main.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: main.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import "./styling/main.scss";
+import Chart from "chart.js/auto";
+
+/** * Container för grodanimationen.
+ * @type {HTMLElement|null} 
+ */
+const frogContainer = document.getElementById("frog-animation");
+
+if (frogContainer) {
+  frogContainer.addEventListener("click", () => {
+    frogContainer.classList.add("is-active");
+  });
+}
+
+/**
+ * Hämtar statistik från ett externt JSON-bibliotek, filtrerar fram de 6 mest sökta kurserna
+ * och renderar ett stapeldiagram med Chart.js.
+ * @async
+ * @function displayStatistics
+ * @returns {Promise&lt;void>}
+ */
+
+async function displayStatistics() {
+  try {
+    const response = await fetch(
+      "https://mallarmiun.github.io/Frontend-baserad-webbutveckling/Moment%205%20-%20Dynamiska%20webbplatser/statistik_sokande_ht25.json",
+    );
+
+    if (!response.ok) {
+      throw new Error("Kunde inte hämta data från källan.");
+    }
+
+    const data = await response.json();
+
+    const topCourses = data
+      .filter((item) => item.type === "Kurs")
+      .sort((a, b) => parseInt(b.applicantsTotal) - parseInt(a.applicantsTotal))
+      .slice(0, 6);
+
+    const ctx = document.getElementById("barChart");
+
+    if (ctx) {
+      const myBarChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: topCourses.map((c) => c.name),
+          datasets: [
+            {
+              label: "Antal sökande (Totalt)",
+              data: topCourses.map((c) => parseInt(c.applicantsTotal)),
+              backgroundColor: "rgba(75, 192, 192, 0.5)",
+              borderColor: "rgba(75, 192, 192, 1)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          color: "black",
+          scales: {
+            y: {
+              afterFit: (axis) => {
+                axis.width = 380;
+              },
+              ticks: {
+                padding: 10,
+                color: "black",
+              },
+            },
+          },
+          layout: {
+            padding: {
+              left: 10,
+              bottom: 30,
+            },
+          },
+          plugins: {
+            legend: { position: "top" },
+          },
+        },
+      });
+    }
+  } catch (error) {
+    console.error("Fel:", error);
+  }
+}
+
+/**
+ * Hämtar statistik, filtrerar fram de 5 mest sökta programmen
+ * och renderar ett cirkeldiagram (Pie Chart).
+ * @async
+ * @function displayProgramStatistics
+ * @returns {Promise&lt;void>}
+ */
+async function displayProgramStatistics() {
+  try {
+    const response = await fetch(
+      "https://mallarmiun.github.io/Frontend-baserad-webbutveckling/Moment%205%20-%20Dynamiska%20webbplatser/statistik_sokande_ht25.json",
+    );
+    const data = await response.json();
+
+    const topPrograms = data
+      .filter((item) => item.type === "Program")
+      .sort((a, b) => parseInt(b.applicantsTotal) - parseInt(a.applicantsTotal))
+      .slice(0, 5);
+
+    const ctxPie = document.getElementById("pieChart");
+
+    if (ctxPie) {
+      const myPieChart = new Chart(ctxPie, {
+        type: "pie",
+        data: {
+          labels: topPrograms.map((p) => p.name),
+          datasets: [
+            {
+              label: "Antal sökande (Totalt)",
+              data: topPrograms.map((p) => parseInt(p.applicantsTotal)),
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.6)",
+                "rgba(54, 162, 235, 0.6)",
+                "rgba(255, 206, 86, 0.6)",
+                "rgba(75, 192, 192, 0.6)",
+                "rgba(153, 102, 255, 0.6)",
+              ],
+              borderColor: "#ffffff",
+              borderWidth: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          layout: {
+            padding: {
+              right: 10,
+            },
+          },
+          plugins: {
+            legend: {
+              position: "bottom",
+              align: "center",
+              labels: {
+                color: "black",
+                padding: 15,
+                usePointStyle: true,
+                font: { size: 12 },
+              },
+            },
+            tooltip: {
+              enabled: true,
+            },
+          },
+        },
+      });
+    }
+  } catch (error) {
+    console.error("Kunde inte ladda programstatistik:", error);
+  }
+}
+
+/*/** * Markör-instans för kartan.
+ * @type {google.maps.marker.AdvancedMarkerElement} 
+ */
+let marker;
+
+/** * Kartans HTML-element.
+ * @type {HTMLElement} 
+ */
+let mapElement;
+
+/**
+ * Initialiserar Google Maps via Google Maps Library.
+ * Sätter upp kartans startposition och event listener för sökning.
+ * @async
+ * @function initMap
+ * @returns {Promise&lt;void>}
+ */
+async function initMap() {
+  const [{ Map }, { AdvancedMarkerElement }] = await Promise.all([
+    google.maps.importLibrary("maps"),
+    google.maps.importLibrary("marker"),
+  ]);
+
+  mapElement = document.querySelector("gmp-map");
+  const innerMap = mapElement.innerMap;
+
+  marker = new AdvancedMarkerElement({
+    map: innerMap,
+    position: mapElement.center,
+    title: "Vald plats",
+  });
+
+  document.getElementById("search-button").addEventListener("click", () => {
+    const address = document.getElementById("address-input").value;
+    geocodeAddress(address);
+  });
+}
+
+/**
+ * Utför ett AJAX-anrop (Fetch) till Google Geocoding API för att omvandla en textadress
+ * till geografiska koordinater och uppdaterar kartans position.
+ * @async
+ * @function geocodeAddress
+ * @param {string} address - Adressen som ska sökas efter.
+ * @returns {Promise&lt;void>}
+ */
+async function geocodeAddress(address) {
+  const apiKey = "AIzaSyCea6n934RqpnE0rYs9Npf5a7llgOzhoWw";
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&amp;key=${apiKey}`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.status === "OK") {
+      const location = data.results[0].geometry.location;
+
+      mapElement.center = location;
+      mapElement.zoom = 12;
+
+      marker.position = location;
+    } else {
+      alert("Kunde inte hitta platsen: " + data.status);
+    }
+  } catch (error) {
+    console.error("Fel vid AJAX-anrop:", error);
+  }
+}
+
+// Kör initialiseringar
+displayStatistics();
+displayProgramStatistics();
+initMap();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#displayProgramStatistics">displayProgramStatistics</a></li><li><a href="global.html#displayStatistics">displayStatistics</a></li><li><a href="global.html#frogContainer">frogContainer</a></li><li><a href="global.html#geocodeAddress">geocodeAddress</a></li><li><a href="global.html#initMap">initMap</a></li><li><a href="global.html#mapElement">mapElement</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Mar 10 2026 14:55:53 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

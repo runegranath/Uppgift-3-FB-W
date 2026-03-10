@@ -4,6 +4,10 @@ Du kan se det färdiga resultatet här:
 
 https://runegranath.github.io/Uppgift-3-FB-W/
 
+JSdokumentation hittar du här: 
+
+https://runegranath.github.io/Uppgift-3-FB-W/out/index.html
+
 Tekniker:
 
 Vite – Byggverktyg för snabb utveckling.

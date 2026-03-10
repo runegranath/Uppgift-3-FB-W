@@ -6,7 +6,7 @@ https://runegranath.github.io/Uppgift-3-FB-W/
 
 JSdokumentation hittar du här: 
 
-https://runegranath.github.io/Uppgift-3-FB-W/out/index.html
+https://runegranath.github.io/Uppgift-3-FB-W/out/
 
 Tekniker:
 
